@@ -17,10 +17,10 @@ import (
 func main() {
 	//Register your app on http://open.youtu.qq.com
 	//Get the following details
-	appID := uint32(1000061)
-	secretID := "AKID4Bhs9vqYT6mHa9TkIrAe7w5oijOCEjql"
-	secretKey := "P2VTKNvTAnYNwBrqXbgxRSFQs6FTEhNJ"
-	userID := "3041722595"
+	appID := uint32()
+	secretID := ""
+	secretKey := ""
+	userID := ""
 
 	as, err := youtu.NewAppSign(appID, secretID, secretKey, userID)
 	if err != nil {

@@ -1,3 +1,6 @@
+### 说明
+
+- 本SDK由开发者：oChapman  （qq313803149）提供，后续将由开放平台和oChapman  共同维护，也欢迎大家提pull request
 ##youtu
 `youtu`是http://open.youtu.qq.com 提供接口的Go实现版本
 
@@ -5,7 +8,7 @@
 ### 下载:
 
 ```bash
-go get https://github.com/ochapman/youtu
+go get https://github.com/TencentYouTu/go_sdk
 ```
 
 ### 使用:
@@ -17,5 +20,4 @@ go get https://github.com/ochapman/youtu
 
 
 ###文档
-[![GoDoc](https://godoc.org/github.com/ochapman/youtu?status.svg)](https://godoc.org/github.com/ochapman/youtu)
-
+[![GoDoc](https://godoc.org/github.com/TencentYouTu/go_sdk?status.svg)](https://godoc.org/github.com/TencentYouTu/go_sdk)
