@@ -32,9 +32,9 @@ func main() {
 		fmt.Fprintf(os.Stderr, "ReadFile() failed: %s\n", err)
 		return
 	}
-
+    //yt := youtu.Init(as, youtu.TencentYunHost)
 	yt := youtu.Init(as, youtu.DefaultHost)
-	df, err := yt.DetectFace(imgData, false)
+	df, err := yt.DetectFace(imgData, false, 0)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "DetectFace() failed: %s", err)
 		return
