@@ -121,6 +121,7 @@ type Face struct {
 	Pitch      int32   `json:"pitch"`      //上下偏移[-30,30]
 	Yaw        int32   `json:"yaw"`        //左右偏移[-30,30]
 	Roll       int32   `json:"roll"`       //平面旋转[-180,180]
+    Beauty     int32   `json:"beauty"`     //魅力值 [0~100]
 }
 
 //DetectFaceRsp 脸检测返回
@@ -134,7 +135,7 @@ type DetectFaceRsp struct {
 }
 
 //DetectFace 检测给定图片(Image)中的所有人脸(Face)的位置和相应的面部属性。
-//位置包括(x, y, w, h)，面部属性包括性别(gender), 年龄(age),
+//位置包括(x, y, w, h)，面部属性包括性别(gender), 年龄(age), 魅力值(beauty)
 //表情(expression), 眼镜(glass)和姿态(pitch，roll，yaw).
 //imageType 表示image类型是图片还是URL, 其中0代表图片,1代表url
 func (y *Youtu) DetectFace(image []byte, isBigFace bool, imageType int) (rsp DetectFaceRsp, err error) {
