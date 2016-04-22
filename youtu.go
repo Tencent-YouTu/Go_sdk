@@ -667,7 +667,7 @@ type ImageTagRsp struct{
 //ImageTag 图片分类 
 //imageType 表示image类型是图片还是URL, 其中0代表图片,1代表url
 func (y *Youtu) ImageTag(image []byte, imageType int, seq string) (rsp ImageTagRsp, err error) {
-    var req FoodDetectReq
+    var req ImageTagReq
     req.AppID =  y.appID()
     req.Seq = seq 
 
@@ -678,5 +678,132 @@ func (y *Youtu) ImageTag(image []byte, imageType int, seq string) (rsp ImageTagR
     }   
     
     err = y.interfaceRequest("imagetag", req, &rsp, 1)
+    return
+}
+
+type ImagePornReq struct{
+    AppID  string `json:"app_id"`  //App的 API ID
+    Url    string `json:"url,omitempty"`   //图片的url 
+    Image  string `json:"image,omitempty"`  //使用base64编码的二进制图片数据
+    Seq    string `json:"seq,omitempty"`  // 序列号
+}
+
+
+type ImagePornRsp struct{
+    Seq    string `json:"seq,omitempty"`  // 序列号
+    Tags   []ImageTag `json:"tags"`
+    ErrorCode int32  `json:"errorcode"` //返回状态码
+    ErrorMsg  string `json:"errormsg"`  //返回错误消息
+}
+
+//ImagePorn 图片分类 
+//imageType 表示image类型是图片还是URL, 其中0代表图片,1代表url
+func (y *Youtu) ImagePorn(image []byte, imageType int, seq string) (rsp ImagePornRsp, err error) {
+    var req ImagePornReq
+    req.AppID =  y.appID()
+    req.Seq = seq 
+
+    if imageType == 0 { 
+       req.Image = base64.StdEncoding.EncodeToString(image)
+    } else {
+       req.Url = string(image)
+    }   
+    
+    err = y.interfaceRequest("imageporn", req, &rsp, 1)
+    return
+}
+
+type IdcardOcrReq struct{
+    AppID  string `json:"app_id"`  //App的 API ID
+    Url    string `json:"url,omitempty"`   //图片的url 
+    Image  string `json:"image,omitempty"`  //使用base64编码的二进制图片数据
+    CardType int32 `json:"card_type,omitempty"`        // 身份证正反面
+    SessionId  string `json:"session_id,omitempty"`  // 序列号
+} 
+
+type IdcardOcrRsp struct{
+    SessionId    string `json:"session_id,omitempty"`  // 序列号
+    Name   string `json:"name,omitempty"`  // 证件姓名
+    NameConfidenceAll []int32 `json:"name_confidence_all,omitempty"`  // 证件姓名置信度   
+    Sex   string `json:"sex,omitempty"`  // 性别
+    SexConfidenceAll []int32 `json:"sex_confidence_all,omitempty"`  // 性别置信度    
+    Nation   string `json:"nation,omitempty"`  // 民族
+    NationConfidenceAll []int32 `json:"nation_confidence_all,omitempty"`  // 民族置信度
+    Birth   string `json:"birth,omitempty"`  // 出生日期
+    BirthConfidenceAll []int32 `json:"birth_confidence_all,omitempty"`  // 出生日期置信度
+    Adress   string `json:"address,omitempty"`  // 出生日期
+    AddressConfidenceAll []int32 `json:"address_confidence_all,omitempty"`  // 出生日期置信度
+    Id   string `json:"id,omitempty"`  // 身份证号
+    IdConfidenceAll []int32 `json:"id_confidence_all,omitempty"`  // 身份证号置信度
+    FrontImage   string `json:"frontimage,omitempty"`  // OCR识别的身份证正面照片
+    FrontImageConfidenceAll []int32 `json:"frontimage_confidence_all,omitempty"`  // 正面照片置信度
+    WaterMask   int32 `json:"watermask_status,omitempty"`  //水印是否存在(暂时不提供)
+    WaterMaskConfidenceAll []int32 `json:"watermask_confidence_all,omitempty"`  // 水印置信度
+    ValidDate   string `json:"valid_date,omitempty"`  //证件的有效期
+    ValidDateConfidenceAll []int32 `json:"valid_date_confidence_all,omitempty"`  // 证件的有效期置信度
+    Authority   string `json:"authority,omitempty"`  //发证机关
+    AuthorityConfidenceAll []int32 `json:"authority_confidence_all,omitempty"`  // 发证机关置信度
+    BackImage   string `json:"backimage,omitempty"`  //OCR识别的证件身份证反面照片
+    BackImageConfidenceAll []int32 `json:"backimage_confidence_all,omitempty"`  // 反面照片置信度
+    DetailErrorcode []int32 `json:"detail_errorcode,omitempty"`  //详细的错误原因
+    DetailErrormsg []string `json:"detail_errormsg,omitempty"`  // 详细的错误原因说明
+    ErrorCode int32  `json:"errorcode"` //返回状态码
+    ErrorMsg  string `json:"errormsg"`  //返回错误消息
+}
+
+//IdcardOcr 图片分类 
+//imageType 表示image类型是图片还是URL, 其中0代表图片,1代表url
+//cardType 代表身份证正面还是反面，其中0代表证明，1代表反面
+func (y *Youtu) IdcardOcr(image []byte, imageType int, cardType int32, seq string) (rsp IdcardOcrRsp, err error) {
+    var req IdcardOcrReq
+    req.AppID =  y.appID()
+    req.SessionId = seq 
+    req.CardType = cardType
+    
+    if imageType == 0 { 
+       req.Image = base64.StdEncoding.EncodeToString(image)
+    } else {
+       req.Url = string(image)
+    }   
+    
+    err = y.interfaceRequest("idcardocr", req, &rsp, 2)
+    return
+}
+
+type NamecardOcrReq struct{
+    AppID  string `json:"app_id"`  //App的 API ID
+    Url    string `json:"url,omitempty"`   //图片的url 
+    Image  string `json:"image,omitempty"`  //使用base64编码的二进制图片数据
+    RetImage bool `json:"retimage,omitempty"`        // 是否需要返回处理结果图 
+    SessionId  string `json:"session_id,omitempty"`  // 序列号
+} 
+
+type NamecardOcrRsp struct{
+    SessionId    string `json:"session_id,omitempty"`  // 序列号
+    Phone   string `json:"phone,omitempty"`  // 手机号
+    PhoneConfidence float32 `json:"phone_confidence ,omitempty"`  // 手机号置信度   
+    Name   string `json:"name ,omitempty"`  // 姓名
+    NameConfidence float32 `json:"name_confidence ,omitempty"`  // 姓名置信度  
+    Image    string `json:"image ,omitempty"`  // 处理结果图片
+    ErrorCode int32  `json:"errorcode"` //返回状态码
+    ErrorMsg  string `json:"errormsg"`  //返回错误消息
+}
+
+//NameCardOcr 图片分类 
+//imageType 表示image类型是图片还是URL, 其中0代表图片,1代表url
+//是否需要返回处理结果图,true 返回，false 不返回
+func (y *Youtu) NameCardOcr(image []byte, imageType int, retImage bool, seq string) (rsp NamecardOcrRsp, err error) {
+    var req NamecardOcrReq
+    req.AppID =  y.appID()
+    req.SessionId = seq 
+    req.RetImage = retImage
+    
+    if imageType == 0 { 
+       req.Image = base64.StdEncoding.EncodeToString(image)
+    } else {
+       req.Url = string(image)
+    }   
+    
+    err = y.interfaceRequest("namecardocr", req, &rsp, 2)
     return
 }
