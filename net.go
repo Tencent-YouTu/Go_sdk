@@ -20,8 +20,10 @@ import (
 func (y *Youtu) interfaceURL(ifname string, urltype int) string {
     if urltype == 0 {
 	    return fmt.Sprintf("%s/youtu/api/%s", y.host, ifname)
-    } else {
+    } else if urltype == 1{
         return fmt.Sprintf("%s/youtu/imageapi/%s", y.host, ifname)
+    } else {
+        return fmt.Sprintf("%s/youtu/ocrapi/%s", y.host, ifname)
     }
 }
 
