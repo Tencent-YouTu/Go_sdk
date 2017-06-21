@@ -807,3 +807,121 @@ func (y *Youtu) NameCardOcr(image []byte, imageType int, retImage bool, seq stri
     err = y.interfaceRequest("namecardocr", req, &rsp, 2)
     return
 }
+
+type Coordinate struct {
+    X int32 `json:"x"`
+    Y int32 `json:"y"`
+    Width int32 `json:"width"`
+    Height int32 `json:"height"`
+}
+
+type Word struct {
+    Character string `json:"character"`
+    Confidence float32 `json:"confidence"`
+    Wordid int32 `json:"wordid,omitempty"`
+}
+
+type ItemContent struct {
+    Item string `json:"item,omitempty"`
+    Itemcoord Coordinate `json:"itemcoord,omitempty"`
+    Itemconf float32 `json:"itemconf,omitempty"`
+    Itemstring string `json:"itemstring,omitempty"`
+    Coords []Coordinate `json:"coords,omitempty"`
+    Words []Word `json:"words,omitempty"`
+}
+
+type DriverlicenseOcrReq struct{
+    AppID  string `json:"app_id"`  //App的 API ID
+    Url    string `json:"url,omitempty"`   //图片的url
+    Image  string `json:"image,omitempty"` //使用base64编码的二进制图片数据
+    Type   int32 `json:"type,omitempty"`    //识别类型
+    SessionId  string `json:"session_id,omitempty"`  // 序列号
+}
+
+type DriverlicenseOcrRsp struct{
+    SessionId    string `json:"session_id,omitempty"`  // 序列号
+    Items []ItemContent `json:"items,omitempty"`
+    ErrorCode int32  `json:"errorcode"` //返回状态码
+    ErrorMsg  string `json:"errormsg"`  //返回错误消息
+}
+
+//DriverLicenseOcr 行驶证&驾驶证识别
+//imageType 表示image类型是图片还是URL, 其中0代表图片,1代表url
+//procType 表示图片识别类型，其中0代表行驶证，1代表驾驶证
+func (y *Youtu) DriverLicenseOcr(image []byte, imageType int, procType int32, seq string) (rsp DriverlicenseOcrRsp, err error) {
+    var req DriverlicenseOcrReq
+    req.AppID =  y.appID()
+    req.SessionId = seq
+    req.Type = procType
+
+    if imageType == 0 {
+       req.Image = base64.StdEncoding.EncodeToString(image)
+    } else {
+       req.Url = string(image)
+    }
+
+    err = y.interfaceRequest("driverlicenseocr", req, &rsp, 2)
+    return
+}
+
+type BCOcrReq struct{
+    AppID  string `json:"app_id"`  //App的 API ID
+    Url    string `json:"url,omitempty"`   //图片的url
+    Image  string `json:"image,omitempty"` //使用base64编码的二进制图片数据
+    SessionId  string `json:"session_id,omitempty"`  // 序列号
+}
+
+type BCOcrRsp struct{
+    SessionId    string `json:"session_id,omitempty"`  // 序列号
+    Items []ItemContent `json:"items,omitempty"`
+    ErrorCode int32  `json:"errorcode"` //返回状态码
+    ErrorMsg  string `json:"errormsg"`  //返回错误消息
+}
+
+//BCOcr 名片OCR识别
+//imageType 表示image类型是图片还是URL, 其中0代表图片,1代表url
+func (y *Youtu) BCOcr(image []byte, imageType int, seq string) (rsp BCOcrRsp, err error) {
+    var req BCOcrReq
+    req.AppID =  y.appID()
+    req.SessionId = seq
+
+    if imageType == 0 {
+       req.Image = base64.StdEncoding.EncodeToString(image)
+    } else {
+       req.Url = string(image)
+    }
+
+    err = y.interfaceRequest("bcocr", req, &rsp, 2)
+    return
+}
+
+type GeneralOcrReq struct{
+    AppID  string `json:"app_id"`  //App的 API ID
+    Url    string `json:"url,omitempty"`   //图片的url
+    Image  string `json:"image,omitempty"` //使用base64编码的二进制图片数据
+    SessionId  string `json:"session_id,omitempty"`  // 序列号
+}
+
+type GeneralOcrRsp struct{
+    SessionId    string `json:"session_id,omitempty"`  // 序列号
+    Items []ItemContent `json:"items,omitempty"`
+    ErrorCode int32  `json:"errorcode"` //返回状态码
+    ErrorMsg  string `json:"errormsg"`  //返回错误消息
+}
+
+//GeneralOcr 通用OCR识别
+//imageType 表示image类型是图片还是URL, 其中0代表图片,1代表url
+func (y *Youtu) GeneralOcr(image []byte, imageType int, seq string) (rsp GeneralOcrRsp, err error) {
+    var req GeneralOcrReq
+    req.AppID =  y.appID()
+    req.SessionId = seq
+
+    if imageType == 0 {
+       req.Image = base64.StdEncoding.EncodeToString(image)
+    } else {
+       req.Url = string(image)
+    }
+
+    err = y.interfaceRequest("generalocr", req, &rsp, 2)
+    return
+}
