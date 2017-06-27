@@ -14,11 +14,10 @@ import (
 
 //Update as if you want to test your own app
 var as = AppSign{
-	appID:     1000061,
-	secretID:  "AKID4Bhs9vqYT6mHa9TkIrAe7w5oijOCEjql",
-	secretKey: "P2VTKNvTAnYNwBrqXbgxRSFQs6FTEhNJ",
-	//expired:   1440207436 + 5000,
-	userID: "3041722595",
+	appID:     ,
+	secretID:  "",
+	secretKey: "",
+	userID: "",
 }
 
 const testDataDir = "./testdata/"

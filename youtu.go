@@ -753,7 +753,7 @@ type IdcardOcrRsp struct{
 
 //IdcardOcr 图片分类 
 //imageType 表示image类型是图片还是URL, 其中0代表图片,1代表url
-//cardType 代表身份证正面还是反面，其中0代表证明，1代表反面
+//cardType 代表身份证正面还是反面，其中0代表正面，1代表反面
 func (y *Youtu) IdcardOcr(image []byte, imageType int, cardType int32, seq string) (rsp IdcardOcrRsp, err error) {
     var req IdcardOcrReq
     req.AppID =  y.appID()
