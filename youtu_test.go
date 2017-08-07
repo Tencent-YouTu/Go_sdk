@@ -14,10 +14,10 @@ import (
 
 //Update as if you want to test your own app
 var as = AppSign{
-	appID:     ,
+	appID:     0,
 	secretID:  "",
 	secretKey: "",
-	userID: "",
+	userID:    "",
 }
 
 const testDataDir = "./testdata/"
@@ -30,7 +30,7 @@ func TestDetectFace(t *testing.T) {
 		t.Errorf("ReadFile failed: %s", err)
 		return
 	}
-	rsp, err := yt.DetectFace(imgData, false)
+	rsp, err := yt.DetectFace(imgData, false, 0)
 	if err != nil {
 		t.Errorf("Detect face faild: %s", err)
 		return
@@ -44,7 +44,7 @@ func TestFaceShape(t *testing.T) {
 		t.Errorf("ReadFile failed: %s\n", err)
 		return
 	}
-	rsp, err := yt.FaceShape(imgData, false)
+	rsp, err := yt.FaceShape(imgData, false, 0)
 	if err != nil {
 		t.Errorf("FaceShape failed: %s\n", err)
 		return
@@ -63,7 +63,7 @@ func TestFaceCompare(t *testing.T) {
 		t.Errorf("Encode imageB failed: %s\n", err)
 		return
 	}
-	rsp, err := yt.FaceCompare(imageA, imageB)
+	rsp, err := yt.FaceCompare(imageA, imageB, 0)
 	if err != nil {
 		t.Errorf("FaceCompare failed: %s\n", err)
 		return
@@ -78,7 +78,7 @@ func TestFaceVerify(t *testing.T) {
 		return
 	}
 	personID := "1045684262752288767"
-	rsp, err := yt.FaceVerify(personID, image)
+	rsp, err := yt.FaceVerify(personID, image, 0)
 	if err != nil {
 		t.Errorf("FaceVerify failed: %s\n", err)
 		return
@@ -93,7 +93,7 @@ func TestFaceIdentify(t *testing.T) {
 		return
 	}
 	groupID := "tencent"
-	rsp, err := yt.FaceIdentify(groupID, image)
+	rsp, err := yt.FaceIdentify(groupID, image, 0)
 	if err != nil {
 		t.Errorf("FaceIdentify failed: %s\n", err)
 		return
@@ -108,7 +108,7 @@ func TestNewPerson(t *testing.T) {
 		return
 	}
 	groupIDs := []string{"tencent"}
-	rsp, err := yt.NewPerson("ochapman", "ochapman", groupIDs, image, "person tag")
+	rsp, err := yt.NewPerson("ochapman", "ochapman", groupIDs, image, "person tag", 0)
 	if err != nil && rsp.ErrorMsg != "ERROR_PERSON_EXISTED" {
 		t.Errorf("NewPerson failed: %s\n", err)
 		return
@@ -134,7 +134,7 @@ func TestAddFace(t *testing.T) {
 	personID := "ochapman"
 	images := [][]byte{image}
 	tag := "face tag"
-	rsp, err := yt.AddFace(personID, images, tag)
+	rsp, err := yt.AddFace(personID, images, tag, 0)
 	if err != nil {
 		t.Errorf("AddFace failed: %s\n", err)
 		return
