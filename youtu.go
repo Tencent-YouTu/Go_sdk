@@ -770,44 +770,6 @@ func (y *Youtu) IdcardOcr(image []byte, imageType int, cardType int32, seq strin
     return
 }
 
-type NamecardOcrReq struct{
-    AppID  string `json:"app_id"`  //App的 API ID
-    Url    string `json:"url,omitempty"`   //图片的url 
-    Image  string `json:"image,omitempty"`  //使用base64编码的二进制图片数据
-    RetImage bool `json:"retimage,omitempty"`        // 是否需要返回处理结果图 
-    SessionId  string `json:"session_id,omitempty"`  // 序列号
-} 
-
-type NamecardOcrRsp struct{
-    SessionId    string `json:"session_id,omitempty"`  // 序列号
-    Phone   string `json:"phone,omitempty"`  // 手机号
-    PhoneConfidence float32 `json:"phone_confidence ,omitempty"`  // 手机号置信度   
-    Name   string `json:"name ,omitempty"`  // 姓名
-    NameConfidence float32 `json:"name_confidence ,omitempty"`  // 姓名置信度  
-    Image    string `json:"image ,omitempty"`  // 处理结果图片
-    ErrorCode int32  `json:"errorcode"` //返回状态码
-    ErrorMsg  string `json:"errormsg"`  //返回错误消息
-}
-
-//NameCardOcr 图片分类 
-//imageType 表示image类型是图片还是URL, 其中0代表图片,1代表url
-//是否需要返回处理结果图,true 返回，false 不返回
-func (y *Youtu) NameCardOcr(image []byte, imageType int, retImage bool, seq string) (rsp NamecardOcrRsp, err error) {
-    var req NamecardOcrReq
-    req.AppID =  y.appID()
-    req.SessionId = seq 
-    req.RetImage = retImage
-    
-    if imageType == 0 { 
-       req.Image = base64.StdEncoding.EncodeToString(image)
-    } else {
-       req.Url = string(image)
-    }   
-    
-    err = y.interfaceRequest("namecardocr", req, &rsp, 2)
-    return
-}
-
 type Coordinate struct {
     X int32 `json:"x"`
     Y int32 `json:"y"`
