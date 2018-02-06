@@ -30,10 +30,6 @@ var (
 	DefaultHost = "http://api.youtu.qq.com"
 )
 
-var (
-	//腾讯云host
-	TencentYunHost = "https://youtu.api.qcloud.com"
-)
 
 //AppSign 应用签名鉴权
 type AppSign struct {
