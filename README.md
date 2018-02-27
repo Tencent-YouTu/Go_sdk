@@ -8,7 +8,7 @@
 ### 下载:
 
 ```bash
-go get https://github.com/TencentYouTu/go_sdk
+go get https://github.com/Tencent-YouTu/go_sdk
 ```
 
 ### 使用:

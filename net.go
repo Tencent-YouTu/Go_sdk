@@ -8,23 +8,25 @@ package youtu
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
 	"strings"
 	"time"
-    "errors"
 )
 
 func (y *Youtu) interfaceURL(ifname string, urltype int) string {
-    if urltype == 0 {
-	    return fmt.Sprintf("%s/youtu/api/%s", y.host, ifname)
-    } else if urltype == 1{
-        return fmt.Sprintf("%s/youtu/imageapi/%s", y.host, ifname)
-    } else {
-        return fmt.Sprintf("%s/youtu/ocrapi/%s", y.host, ifname)
-    }
+	if urltype == 3 {
+		return fmt.Sprintf("%s/youtu/carapi/%s", y.host, ifname)
+	} else if urltype == 0 {
+		return fmt.Sprintf("%s/youtu/api/%s", y.host, ifname)
+	} else if urltype == 1 {
+		return fmt.Sprintf("%s/youtu/imageapi/%s", y.host, ifname)
+	} else {
+		return fmt.Sprintf("%s/youtu/ocrapi/%s", y.host, ifname)
+	}
 }
 
 func (y *Youtu) interfaceRequest(ifname string, req, rsp interface{}, urltype int) (err error) {
@@ -36,10 +38,12 @@ func (y *Youtu) interfaceRequest(ifname string, req, rsp interface{}, urltype in
 	if err != nil {
 		return
 	}
-    body, err := y.get(url, string(data))
+	//fmt.Println(string(data))
+	body, err := y.get(url, string(data))
 	if err != nil {
 		return
 	}
+	//fmt.Println(string(body))
 	err = json.Unmarshal(body, &rsp)
 	if err != nil {
 		if y.debug {
@@ -66,19 +70,19 @@ func (y *Youtu) get(addr string, req string) (rsp []byte, err error) {
 	httpreq.Header.Add("Content-Type", "text/json")
 	httpreq.Header.Add("User-Agent", "")
 	httpreq.Header.Add("Accept", "*/*")
-	httpreq.Header.Add("Expect", "100-continue")
+	//httpreq.Header.Add("Expect", "100-continue")
 	resp, err := client.Do(httpreq)
-	
-    if err != nil {
+
+	if err != nil {
 		return
 	}
-    
-    if resp.StatusCode != 200 {
-        errStr := fmt.Sprintf("httperrorcode: %d \n", resp.StatusCode)    
-        err = errors.New(errStr)
-        return 
-    }
-    
+
+	if resp.StatusCode != 200 {
+		errStr := fmt.Sprintf("httperrorcode: %d \n", resp.StatusCode)
+		err = errors.New(errStr)
+		return
+	}
+
 	defer resp.Body.Close()
 	rsp, err = ioutil.ReadAll(resp.Body)
 	return

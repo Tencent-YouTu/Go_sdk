@@ -8,16 +8,17 @@
 package youtu
 
 import (
-	"io/ioutil"
+	//"io/ioutil"
 	"testing"
+	"io/ioutil"
 )
 
 //Update as if you want to test your own app
 var as = AppSign{
-	appID:     ,
+	appID:     0,
 	secretID:  "",
 	secretKey: "",
-	userID: "",
+	userID:    "",
 }
 
 const testDataDir = "./testdata/"
@@ -30,7 +31,7 @@ func TestDetectFace(t *testing.T) {
 		t.Errorf("ReadFile failed: %s", err)
 		return
 	}
-	rsp, err := yt.DetectFace(imgData, false)
+	rsp, err := yt.DetectFace(imgData, false, 0)
 	if err != nil {
 		t.Errorf("Detect face faild: %s", err)
 		return
@@ -44,7 +45,7 @@ func TestFaceShape(t *testing.T) {
 		t.Errorf("ReadFile failed: %s\n", err)
 		return
 	}
-	rsp, err := yt.FaceShape(imgData, false)
+	rsp, err := yt.FaceShape(imgData, false, 0)
 	if err != nil {
 		t.Errorf("FaceShape failed: %s\n", err)
 		return
@@ -63,7 +64,7 @@ func TestFaceCompare(t *testing.T) {
 		t.Errorf("Encode imageB failed: %s\n", err)
 		return
 	}
-	rsp, err := yt.FaceCompare(imageA, imageB)
+	rsp, err := yt.FaceCompare(imageA, imageB, 0)
 	if err != nil {
 		t.Errorf("FaceCompare failed: %s\n", err)
 		return
@@ -78,7 +79,7 @@ func TestFaceVerify(t *testing.T) {
 		return
 	}
 	personID := "1045684262752288767"
-	rsp, err := yt.FaceVerify(personID, image)
+	rsp, err := yt.FaceVerify(personID, image, 0)
 	if err != nil {
 		t.Errorf("FaceVerify failed: %s\n", err)
 		return
@@ -93,9 +94,21 @@ func TestFaceIdentify(t *testing.T) {
 		return
 	}
 	groupID := "tencent"
-	rsp, err := yt.FaceIdentify(groupID, image)
+	rsp, err := yt.FaceIdentify(groupID, image, 0)
 	if err != nil {
 		t.Errorf("FaceIdentify failed: %s\n", err)
+		return
+	}
+	t.Logf("rsp: %#v\n", rsp)
+}
+
+func TestMultiFaceIdentify(t *testing.T) {
+	groupID := "tencent"
+	groupIds := []string{}
+	url := "http://open.youtu.qq.com/app/img/experience/face_img/face_05.jpg?v=1.0"
+	rsp, err := yt.MultiFaceIdentify(groupID, groupIds, []byte(url), 1, 0, 0)
+	if err != nil {
+		t.Errorf("TestMultiFaceIdentify failed: %s\n", err)
 		return
 	}
 	t.Logf("rsp: %#v\n", rsp)
@@ -108,7 +121,7 @@ func TestNewPerson(t *testing.T) {
 		return
 	}
 	groupIDs := []string{"tencent"}
-	rsp, err := yt.NewPerson("ochapman", "ochapman", groupIDs, image, "person tag")
+	rsp, err := yt.NewPerson("ochapman", "ochapman", groupIDs, image, "person tag", 0)
 	if err != nil && rsp.ErrorMsg != "ERROR_PERSON_EXISTED" {
 		t.Errorf("NewPerson failed: %s\n", err)
 		return
@@ -134,7 +147,7 @@ func TestAddFace(t *testing.T) {
 	personID := "ochapman"
 	images := [][]byte{image}
 	tag := "face tag"
-	rsp, err := yt.AddFace(personID, images, tag)
+	rsp, err := yt.AddFace(personID, images, tag, 0)
 	if err != nil {
 		t.Errorf("AddFace failed: %s\n", err)
 		return
@@ -207,6 +220,56 @@ func TestGetFaceInfo(t *testing.T) {
 	rsp, err := yt.GetFaceInfo("12345")
 	if err != nil {
 		t.Errorf("GetFaceInfo failed: %s\n", err)
+		return
+	}
+	t.Logf("rsp: %#v\n", rsp)
+}
+
+func TestImageTerrorism(t *testing.T) {
+	url := "http://open.youtu.qq.com/app/img/experience/terror/img_terror01.jpg"
+	rsp, err := yt.ImageTerrorism([]byte(url), 1, "test")
+	if err != nil {
+		t.Errorf("TestImageTerrorism failed: %s\n", err)
+		return
+	}
+	t.Logf("rsp: %#v\n", rsp)
+}
+
+func TestCarClassify(t *testing.T) {
+	url := "http://open.youtu.qq.com/app/img/experience/car/car_01.jpg"
+	rsp, err := yt.CarClassify([]byte(url), 1, "test")
+	if err != nil {
+		t.Errorf("TestImageTerrorism failed: %s\n", err)
+		return
+	}
+	t.Logf("rsp: %#v\n", rsp)
+}
+
+func TestCreditCardOcr(t *testing.T) {
+	url := "http://open.youtu.qq.com/app/img/experience/char_general/ocr_card_1.jpg"
+	rsp, err := yt.CreditCardOcr([]byte(url), 1, "test")
+	if err != nil {
+		t.Errorf("TestCreditCardOcr failed: %s\n", err)
+		return
+	}
+	t.Logf("rsp: %#v\n", rsp)
+}
+
+func TestBizLicenseOcr(t *testing.T) {
+	url := "http://open.youtu.qq.com/app/img/experience/char_general/ocr_yyzz_01.jpg"
+	rsp, err := yt.BizLicenseOcr([]byte(url), 1, "test")
+	if err != nil {
+		t.Errorf("TestBizLicenseOcr failed: %s\n", err)
+		return
+	}
+	t.Logf("rsp: %#v\n", rsp)
+}
+
+func TestPlateOcr(t *testing.T) {
+	url := "http://open.youtu.qq.com/app/img/experience/char_general/ocr_license_1.jpg"
+	rsp, err := yt.PlateOcr([]byte(url), 1, "test")
+	if err != nil {
+		t.Errorf("TestPlateOcr failed: %s\n", err)
 		return
 	}
 	t.Logf("rsp: %#v\n", rsp)
