@@ -8,16 +8,15 @@ package main
 
 import (
 	"fmt"
+	"github.com/Tencent-YouTu/Go_sdk"
 	"io/ioutil"
 	"os"
-
-	"github.com/ochapman/youtu"
 )
 
 func main() {
 	//Register your app on http://open.youtu.qq.com
 	//Get the following details
-	appID := uint32()
+	appID := uint32(0)
 	secretID := ""
 	secretKey := ""
 	userID := ""
@@ -32,7 +31,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, "ReadFile() failed: %s\n", err)
 		return
 	}
-    //yt := youtu.Init(as, youtu.TencentYunHost)
+	//yt := youtu.Init(as, youtu.TencentYunHost)
 	yt := youtu.Init(as, youtu.DefaultHost)
 	df, err := yt.DetectFace(imgData, false, 0)
 	if err != nil {
