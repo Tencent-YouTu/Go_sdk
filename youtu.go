@@ -113,6 +113,7 @@ type Face struct {
 	Age        int32   `json:"age"`        //年龄 [0~100]
 	Expression int32   `json:"expression"` //object 	微笑[0(normal)~50(smile)~100(laugh)]
 	Glass      bool    `json:"glass"`      //是否有眼镜 [true,false]
+	Glasses    int32   `json:"glasses"`    //眼镜[0不戴眼镜 1戴眼镜 2戴墨镜] 注：替代原glass（Bool）字段
 	Pitch      int32   `json:"pitch"`      //上下偏移[-30,30]
 	Yaw        int32   `json:"yaw"`        //左右偏移[-30,30]
 	Roll       int32   `json:"roll"`       //平面旋转[-180,180]
